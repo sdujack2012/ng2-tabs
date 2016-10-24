@@ -1,5 +1,5 @@
 {
-  "name": "@username/ng2-tabs",
+  "name": "ng2-simple-tabs",
   "version": "0.0.1",
   "scripts": {
     "start": "webpack-dev-server --inline --progress --port 8080",
