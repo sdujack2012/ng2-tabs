@@ -1,7 +1,5 @@
-import { Tab }   from './tabs/tab.component';
-import { Tabs }   from './tabs/tabs.component';
 
 
 
-exports.Tab = Tab;
-exports.Tabs = Tabs;
+module.exports.Tab = require('./src/tabs/tab.component').Tab;
+module.exports.Tabs = require('./src/tabs/tabs.component').Tabs;
