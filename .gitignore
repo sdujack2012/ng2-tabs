@@ -1,0 +1,6 @@
+# Dist #
+/src/dist
+/node_modules
+/typings
+
+
