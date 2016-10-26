@@ -1,10 +1,10 @@
-import {Component,Input,ViewEncapsulation,ContentChildren,QueryList} from '@angular/core';
+import {Component,Input,ViewEncapsulation,ContentChildren,QueryList,Output,EventEmitter} from '@angular/core';
 import {Tab} from './tab.component';
 @Component({
   selector: 'my-tabs',
   template: `
   <ul class="tab">
-    <li *ngFor="let tab of tabs"  (click)="ToggleActive(tab)"><a [class.active]='tab.Active'>{{tab.Title}}</a> </li>
+    <li *ngFor="let tab of tabs;let i = index;"  (click)="ToggleActive(i)"><a [class.active]='tab.Active'>{{tab.Title}}</a> </li>
   </ul>
   <div class="tab-content">
     <ng-content></ng-content>
@@ -53,20 +53,17 @@ export class Tabs {
   tabs: Tab[];
   @Input()
   selectedTabIndex:number;
+  @Output()
+  onTabSelected = new EventEmitter<number>();
   constructor(){
     this.tabs=[];
     
   }
   ngAfterContentInit(){
     this.childrenTabs.forEach(tab=>this.AddTab(tab));
+    
     if(this.selectedTabIndex>0){
-      if(this.selectedTabIndex>this.tabs.length-1){
-         throw "Selected tab index is out of range ";
-      }
-      else{
-        this.ToggleActive(this.tabs[this.selectedTabIndex]);
-      }
-
+      this.ToggleActive(this.selectedTabIndex);
     }
   }
   AddTab(tab: Tab){
@@ -75,9 +72,14 @@ export class Tabs {
     }
     this.tabs.push(tab);
   }
-  ToggleActive(tab:Tab){
+  ToggleActive(tabIndex:number){
+    if(tabIndex>this.tabs.length-1){
+         throw "Selected tab index is out of range ";
+    }
     this.tabs.forEach(tab=>{tab.Active=false});
-    tab.Active = true;
+    this.tabs[tabIndex].Active=true;
+    this.selectedTabIndex = tabIndex;
+    this.onTabSelected.emit(tabIndex);
   }
   
 }
